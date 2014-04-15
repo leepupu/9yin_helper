@@ -6,8 +6,9 @@ using namespace std;
 MarketInvestigator::MarketInvestigator()
 {
 	is_receiving=false;
-	hOpen = InternetOpen("9yin_market_investigator", INTERNET_OPEN_TYPE_PRECONFIG,NULL,NULL,0);
 	next_signal = false;
+	monitor_opening_stalls = 0;
+	monitor=0;
 	mongo_server_store_url = L"http://127.0.0.1/a.php";
 }
 
@@ -24,7 +25,7 @@ std::wstring MarketInvestigator::StringToWstring(const std::string str)
 
 void MarketInvestigator::on_receive_18(void)
 {
-	printf("receive 18\n");
+	//printf("receive 18\n");
 	monitor = 0;
 	is_receiving = true;
 }
@@ -35,7 +36,7 @@ void MarketInvestigator::on_receive_key(char* name)
 		return;
 	wstring ws = StringToWstring(string(name));
 	vec.push_back(ws);
-	printf("get key: %s\n", name);
+	//printf("get key: %s\n", name);
 }
 
 void MarketInvestigator::on_receive_value(unsigned int type, char* pData, unsigned int offset)
@@ -71,17 +72,17 @@ void MarketInvestigator::on_receive_value(unsigned int type, char* pData, unsign
 		the_int = *((int*)(pData+offset));
 		ss << the_int;
 		break;
-	case 3:
+	case 3:// long long int
 		the_long_long = *((__int64*)(pData+offset));
 		sprintf(long_long_int_string,"%lld",the_long_long);
 		ss << long_long_int_string;
-	case 4:
+	case 4:// float
 		the_float = *((float*)(pData+offset));
-		ss << the_float;
+		ss << fixed << the_float;
 		break;
-	case 5:
+	case 5:// double
 		the_double = *((double*)(pData+offset));
-		ss << the_double;
+		ss << fixed << the_double;
 		break;
 	case 6:
 		len = *((int*)(pData+offset));
@@ -101,7 +102,7 @@ void MarketInvestigator::on_receive_value(unsigned int type, char* pData, unsign
 
 	wstring sss = vec.back();
 	DWORD ws;
-	WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),sss.c_str(),wcslen((unsigned short*)sss.c_str()),&ws,NULL);
+	//WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),sss.c_str(),wcslen((unsigned short*)sss.c_str()),&ws,NULL);
 
 }
 
@@ -144,6 +145,26 @@ void MarketInvestigator::open_a_stall(wchar_t* owner)
 	pFuncSendPacket(packet,0x26+len*2+4);
 }
 
+DWORD WINAPI MarketInvestigator::thread_refresh_stalls(void* Param)
+{
+	MarketInvestigator* This = (MarketInvestigator*) Param;
+	int count = 0;
+	do
+	{
+		printf("refreshing: %d\n", count);
+		This->send_query_all_market();
+		This->monitor_opening_stalls = 0;
+		do
+		{
+			
+			This->monitor_opening_stalls++;
+			Sleep(1000);
+		}while(This->monitor_opening_stalls<60);
+	}while(true);
+	return 0;
+}
+
+
 DWORD WINAPI MarketInvestigator::thread_open_stalls(void* Param)
 {
 	DWORD ws;
@@ -152,24 +173,24 @@ DWORD WINAPI MarketInvestigator::thread_open_stalls(void* Param)
 	printf("stalls_num: %d\n", This->stalls_num);
 	for(int i=0;i < This->split_num;i+=6)
 	{
-		printf("get stall owner: ");
+		This->now_stall_owner = wstring(This->table[i]);
+		printf("open stall: NO. %d:   ", i+1);
 		WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),This->table[i],wcslen((unsigned short*)This->table[i]),&ws,NULL);
 		printf("\nand waiting...\n");
 		This->open_a_stall(This->table[i]);
 		This->monitor = 0;
-		/*
+		This->monitor_opening_stalls = 0;
 		do
 		{
 			This->monitor++;
 			Sleep(1000);
-		}while(This->monitor>=3);*/
-		while(!This->next_signal)
+		}while(This->monitor<3);
+
+		/*
+		while(!This->next_signal) // manual type next
 			Sleep(3000);
-		This->next_signal = 0;
-
-		This->store_a_record_to_mongo_db();
+		This->next_signal = 0;*/
 	}
-
 	delete This->table;
 	delete This->stalls_data;
 	return 0;
@@ -178,7 +199,7 @@ DWORD WINAPI MarketInvestigator::thread_open_stalls(void* Param)
 void MarketInvestigator::on_receive_market_list(wchar_t* str)
 {
 	DWORD ws;
-	WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),str,wcslen((unsigned short*)str),&ws,NULL);//to print unicode
+	//WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),str,wcslen((unsigned short*)str),&ws,NULL);//to print unicode
 
 	int len = wcslen(str);
 	stalls_data = new wchar_t[len+2];
@@ -211,29 +232,41 @@ void MarketInvestigator::on_receive_market_list(wchar_t* str)
 
 void MarketInvestigator::on_leave_18(void)
 {
-	printf("leave 18\n");
+	//printf("leave 18\n");
 	is_receiving = false;
+	vec.push_back(wstring(L"stall_owner"));
+	vec.push_back(now_stall_owner);
+	store_a_record_to_mongo_db();
 	return ;
 }
 
 void MarketInvestigator::store_a_record_to_mongo_db(void)
 {
-	wstring params = L"?";
+	wstring params = L"json={";
 	int vec_size = vec.size();
 	for(int i=0;i<vec_size;i+=2)
 	{
 		if(i!=0)
-			params += wstring(L"&");
+			params += wstring(L",");
+		params += L"\"";
 		params += vec[i];
-		params += wstring(L"=");
+		params += wstring(L"\":\"");
 		params += vec[i+1];
+		params += L"\"";
 	}
-	wstring final_url(mongo_server_store_url);
-	final_url += params;
+	params += L"}";
+
 	char url[50000]={0};
-	int wsl = wcslen(final_url.c_str());
-	int rl = WideCharToMultiByte (CP_UTF8, 0, (LPWSTR)final_url.c_str(), wsl, (LPSTR)url, wsl*3, 0, 0);
-	InternetOpenUrl(hOpen,url,NULL,0,0,0);
+	int wsl = wcslen(params.c_str());
+	int rl = WideCharToMultiByte (CP_UTF8, 0, (LPWSTR)params.c_str(), wsl, (LPSTR)url, wsl*3, 0, 0);
+	
+	CURL *curl;
+	curl = curl_easy_init();
+	curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1/c.php");
+	curl_easy_setopt(curl, CURLOPT_POSTFIELDS, url);
+	curl_easy_perform(curl);
+	curl_easy_cleanup(curl);
+
 	vec.clear();
 }
 
