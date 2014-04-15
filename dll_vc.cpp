@@ -386,6 +386,8 @@ void cmd_thread()
 			pMarketInvestigator->send_query_all_market();
 		else if(strcmp(cmd,"next") == 0)
 			pMarketInvestigator->next_signal = true;
+		else if(strcmp(cmd,"start_auto_market") == 0)
+			CreateThread(0, 0, (LPTHREAD_START_ROUTINE)MarketInvestigator::thread_refresh_stalls(pMarketInvestigator), 0, 0, 0);
 	}
 }
 
