@@ -6,27 +6,27 @@
 --------------------Configuration: dll_vc - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP9FB.tmp" with contents
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPCE2.tmp" with contents
 [
 /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "DLL_VC_EXPORTS" /Fp"Debug/dll_vc.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
 "C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp"
 "C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP9FB.tmp" 
-Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP9FC.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPCE2.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPCE3.tmp" with contents
 [
 /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "DLL_VC_EXPORTS" /Fp"Debug/dll_vc.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
 "C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\StdAfx.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP9FC.tmp" 
-Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP9FD.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPCE3.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPCE4.tmp" with contents
 [
-kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wininet.lib /nologo /dll /incremental:yes /pdb:"Debug/dll_vc.pdb" /debug /machine:I386 /out:"Debug/dll_vc.dll" /implib:"Debug/dll_vc.lib" /pdbtype:sept 
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wininet.lib libcurl.lib /nologo /dll /incremental:yes /pdb:"Debug/dll_vc.pdb" /debug /machine:I386 /out:"Debug/dll_vc.dll" /implib:"Debug/dll_vc.lib" /pdbtype:sept 
 ".\Debug\dll_vc.obj"
-".\Debug\StdAfx.obj"
 ".\Debug\market_investigator.obj"
+".\Debug\StdAfx.obj"
 ]
-Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP9FD.tmp"
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPCE4.tmp"
 <h3>Output Window</h3>
 Compiling...
 StdAfx.cpp
@@ -40,38 +40,40 @@ C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(343
 C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(343) : warning C4309: '=' : truncation of constant value
 C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(344) : warning C4305: '=' : truncation from 'const int' to 'char'
 C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(344) : warning C4309: '=' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(428) : warning C4309: 'initializing' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(436) : warning C4101: 'a' : unreferenced local variable
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4305: 'initializing' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(430) : warning C4309: 'initializing' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\dll_vc.cpp(438) : warning C4101: 'a' : unreferenced local variable
 c:\program files\microsoft visual studio\vc98\include\utility(21) : warning C4786: 'std::reverse_iterator<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > const *,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> >,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > const &,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > const *,int>' : identifier was truncated to '255' characters in the debug information
 c:\program files\microsoft visual studio\vc98\include\utility(21) : warning C4786: 'std::reverse_iterator<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > *,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> >,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > &,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > *,int>' : identifier was truncated to '255' characters in the debug information
 market_investigator.cpp
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(118) : warning C4305: '=' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(118) : warning C4309: '=' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(104) : warning C4101: 'ws' : unreferenced local variable
 C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(119) : warning C4305: '=' : truncation from 'const int' to 'char'
 C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(119) : warning C4309: '=' : truncation of constant value
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(142) : warning C4305: '=' : truncation from 'const int' to 'char'
-C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(142) : warning C4309: '=' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(120) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(120) : warning C4309: '=' : truncation of constant value
 C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(143) : warning C4305: '=' : truncation from 'const int' to 'char'
 C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(143) : warning C4309: '=' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(144) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(144) : warning C4309: '=' : truncation of constant value
+C:\Documents and Settings\Administrator\My\Dropbox\ShareVM\dll_vc\market_investigator.cpp(202) : warning C4101: 'ws' : unreferenced local variable
 c:\program files\microsoft visual studio\vc98\include\vector(39) : warning C4786: 'std::reverse_iterator<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > const *,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> >,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > const &,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > const *,int>' : identifier was truncated to '255' characters in the debug information
         c:\program files\microsoft visual studio\vc98\include\vector(39) : while compiling class-template member function '__thiscall std::vector<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> >,std::allocator<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > > >::std::vector<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> >,std::allocator<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > > >(const std::allocator<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > > &)'
 c:\program files\microsoft visual studio\vc98\include\vector(39) : warning C4786: 'std::reverse_iterator<std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > *,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> >,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > &,std::basic_string<unsigned short,std::char_traits<unsigned short>,std::allocator<unsigned short> > *,int>' : identifier was truncated to '255' characters in the debug information
