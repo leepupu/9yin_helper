@@ -3,6 +3,10 @@
 
 using namespace std;
 
+const int MarketInvestigator::MARKET = 1;
+const int MarketInvestigator::SHOP = 2;
+const int MarketInvestigator::NOTHING = 0;
+
 MarketInvestigator::MarketInvestigator()
 {
 	is_receiving=false;
@@ -121,6 +125,45 @@ void MarketInvestigator::send_query_all_market(void)
 	pFuncSendPacket(packet,0x23);
 }
 
+void MarketInvestigator::send_query_all_shop(void)
+{
+	char packet[0x30]={0};
+	//stuff data
+	packet[0] = 0x0A; //packet head
+	packet[0x15] = 0x02; //unknow
+	packet[0x17] = 0x02; //type: 4 byte data
+	*((unsigned int*)(packet+0x18)) = 0x3E0;
+	packet[0x1C] = 0x02;
+	*((unsigned int*)(packet+0x1D)) = 0x005;
+	packet[0x21] = 0xEE;
+	packet[0x22] = 0xEE;
+	pFuncSendPacket(packet,0x23);
+}
+
+void MarketInvestigator::open_a_shop(wchar_t* shop_id)
+{
+	char asc_shop_id[1024]={0};
+	int shop_id_len = WideCharToMultiByte(CP_ACP, 0, shop_id, -1, asc_shop_id, 1024, NULL, NULL);
+	shop_id_len++; // for null end
+
+	char packet[0x70]={0};
+	//stuff data
+	packet[0] = 0x0A; //packet head
+	packet[0x15] = 0x03; //unknow
+	packet[0x17] = 0x02; //type: 4 byte data
+	*((unsigned int*)(packet+0x18)) = 0x3E0;
+	packet[0x1C] = 0x02;
+	*((unsigned int*)(packet+0x1D)) = 0x006;
+
+	packet[0x21] = 0x06; // stall owner name
+	*((unsigned int*)(packet+0x22)) = shop_id_len;
+	memcpy(packet+0x26, asc_shop_id, shop_id_len);//no end symbolic
+
+	packet[0x26+shop_id_len] = 0xEE;
+	packet[0x26+shop_id_len+1] = 0xEE;
+	pFuncSendPacket(packet,0x26+shop_id_len+2);
+}
+
 void MarketInvestigator::open_a_stall(wchar_t* owner)
 {
 	unsigned int len = wcslen(owner);
@@ -151,19 +194,70 @@ DWORD WINAPI MarketInvestigator::thread_refresh_stalls(void* Param)
 	int count = 0;
 	do
 	{
-		printf("refreshing: %d\n", count);
+		printf("refreshing: %d\n", count++);
+		This->get_data_for = MarketInvestigator::MARKET;
 		This->send_query_all_market();
 		This->monitor_opening_stalls = 0;
+		
 		do
 		{
 			
 			This->monitor_opening_stalls++;
 			Sleep(1000);
 		}while(This->monitor_opening_stalls<60);
+		if(count%10 != 0)
+			continue;
+		printf("query all shops\n");
+
+		This->send_query_all_shop();
+		This->monitor_opening_stalls = 0;
+		This->get_data_for = MarketInvestigator::SHOP;
+		do
+		{
+			
+			This->monitor_opening_stalls++;
+			Sleep(1000);
+		}while(This->monitor_opening_stalls<60);
+		
+		printf("finish browse shops\n");
 	}while(true);
 	return 0;
 }
 
+DWORD WINAPI MarketInvestigator::thread_open_shops(void* Param)
+{
+	DWORD ws;
+	MarketInvestigator* This = (MarketInvestigator*) Param;
+	This->stalls_num = This->split_num / 5;
+	printf("shops_num: %d\n", This->stalls_num);
+	printf("split_num: %d\n", This->split_num);
+	for(int i=0,scount=0;(i+1) < This->split_num;i+=5,scount++)
+	{
+		printf("real i:%d\n", i);
+		This->now_stall_owner = wstring(This->table[i+1]);
+		printf("open shop: NO. %d:   ", scount+1);
+		WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),This->table[i+1],wcslen((unsigned short*)This->table[i+1]),&ws,NULL);
+		printf("\nand waiting...\n");
+		This->open_a_shop(This->table[i]);
+		This->monitor = 0;
+		This->monitor_opening_stalls = 0;
+		do
+		{
+			This->monitor++;
+			Sleep(1000);
+		}while(This->monitor<2);
+
+		/*
+		while(!This->next_signal) // manual type next
+			Sleep(3000);
+		This->next_signal = 0;*/
+	}
+	printf("clean data...");
+	delete [] This->table;
+	delete This->stalls_data;
+	printf("OK\n");
+	return 0;
+}
 
 DWORD WINAPI MarketInvestigator::thread_open_stalls(void* Param)
 {
@@ -171,10 +265,10 @@ DWORD WINAPI MarketInvestigator::thread_open_stalls(void* Param)
 	MarketInvestigator* This = (MarketInvestigator*) Param;
 	This->stalls_num = This->split_num / 6;
 	printf("stalls_num: %d\n", This->stalls_num);
-	for(int i=0;i < This->split_num;i+=6)
+	for(int i=0,scount=0;i < This->split_num;i+=6,scount++)
 	{
 		This->now_stall_owner = wstring(This->table[i]);
-		printf("open stall: NO. %d:   ", i+1);
+		printf("open stall: NO. %d:   ", scount+1);
 		WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),This->table[i],wcslen((unsigned short*)This->table[i]),&ws,NULL);
 		printf("\nand waiting...\n");
 		This->open_a_stall(This->table[i]);
@@ -184,15 +278,17 @@ DWORD WINAPI MarketInvestigator::thread_open_stalls(void* Param)
 		{
 			This->monitor++;
 			Sleep(1000);
-		}while(This->monitor<3);
+		}while(This->monitor<2);
 
 		/*
 		while(!This->next_signal) // manual type next
 			Sleep(3000);
 		This->next_signal = 0;*/
 	}
-	delete This->table;
+	printf("clean data...");
+	delete [] This->table;
 	delete This->stalls_data;
+	printf("OK\n");
 	return 0;
 }
 
@@ -200,7 +296,8 @@ void MarketInvestigator::on_receive_market_list(wchar_t* str)
 {
 	DWORD ws;
 	//WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),str,wcslen((unsigned short*)str),&ws,NULL);//to print unicode
-
+	if(get_data_for == MarketInvestigator::NOTHING)
+		return;
 	int len = wcslen(str);
 	stalls_data = new wchar_t[len+2];
 	memcpy(stalls_data, str, len*2);
@@ -227,7 +324,12 @@ void MarketInvestigator::on_receive_market_list(wchar_t* str)
 		WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE),table[i],wcslen((unsigned short*)table[i]),&ws,NULL);
 	}
 	*/
-	CreateThread(0, 0, (thread_open_stalls), (void*)this, 0, 0);
+	if(get_data_for == MarketInvestigator::MARKET)
+		CreateThread(0, 0, (thread_open_stalls), (void*)this, 0, 0);
+	else
+		CreateThread(0, 0, (thread_open_shops), (void*)this, 0, 0);
+	get_data_for = NOTHING;
+	
 }
 
 void MarketInvestigator::on_leave_18(void)
@@ -274,3 +376,4 @@ void MarketInvestigator::set_send_packet_func(void* pf)
 {
 	pFuncSendPacket = (void (__cdecl *)(char* , unsigned int))pf;
 }
+
